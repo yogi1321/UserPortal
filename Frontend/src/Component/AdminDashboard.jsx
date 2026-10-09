@@ -56,6 +56,8 @@ function AdminDashboard() {
 
     await getdata();
 
+    return true;
+
   } catch (error) {
     console.log(
       "Update Error:",
@@ -63,6 +65,8 @@ function AdminDashboard() {
     );
 
     alert("Update failed");
+
+    return false;
   }
 };
   const handleDelete = async (roleid) => {
@@ -176,9 +180,11 @@ function AdminDashboard() {
   positionActionsColumn: "last",
 
   onEditingRowSave: async ({ row, values, table }) => {
-    await handleUpdate(row,values);
+    const saved = await handleUpdate(row,values);
 
-    table.setEditingRow(null);
+    if (saved) {
+      table.setEditingRow(null);
+    }
   },
 
   onEditingRowCancel: ({ table }) => {
@@ -206,7 +212,7 @@ function AdminDashboard() {
   return (
     <div className="flex min-h-screen bg-gray-100">
 
-      {/* SIDEBAR */}
+    
       <div className="w-64 shrink-0 bg-gray-800 p-5 text-white">
 
         <h1 className="mb-8 text-4xl font-bold">
@@ -218,6 +224,7 @@ function AdminDashboard() {
           <li>
             <button
               className="w-full rounded-lg bg-gray-700 px-4 py-3 text-center hover:bg-blue-600"
+              onClick={() => navigate("/")}
             >
               Dashboard
             </button>
@@ -226,7 +233,7 @@ function AdminDashboard() {
           <li>
             <button 
               className="w-full rounded-lg bg-gray-700 px-4 py-3 text-center hover:bg-blue-600"
-              onClick={() => navigate("/roles")}            >
+              onClick={() => navigate("/user")}            >
               Users
             </button>
           </li>
@@ -234,6 +241,7 @@ function AdminDashboard() {
           <li>
             <button
               className="w-full rounded-lg bg-gray-700 px-4 py-3 text-center hover:bg-blue-600"
+              onClick={() => navigate("/roles")}
             >
               Roles
             </button>
@@ -244,7 +252,7 @@ function AdminDashboard() {
         <div className="mt-8">
           <button
             onClick={() => {
-              localStorage.removeItem("token");
+             
               window.location.href = "/";
             }}
             className="w-full rounded p-3 text-center text-red-400 hover:bg-red-500 hover:text-white"

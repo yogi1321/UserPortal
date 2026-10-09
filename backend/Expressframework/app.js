@@ -13,6 +13,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var AdminRouter =require('./routes/AdminRouter');
 var RolesRouter = require("./routes/RolesRouter");
+// var UserRouter =  require("./routes/UserRouter");
 
 
 var app = express();
@@ -31,7 +32,8 @@ app.use(cors());
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/admin',AdminRouter);
-app.use("/role",RolesRouter)
+app.use("/role",RolesRouter);
+// app.use("users",usersRouter)
 
 
 

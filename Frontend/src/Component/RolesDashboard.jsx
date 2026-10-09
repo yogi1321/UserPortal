@@ -4,8 +4,10 @@ import {
   MaterialReactTable,
   useMaterialReactTable,
 } from "material-react-table";
+import { useNavigate } from "react-router-dom";
 
 function RolesDashboard() {
+  const navigate = useNavigate();
   const [userData, setUserData] = useState([]);
 
   const getdata = async () => {
@@ -24,24 +26,33 @@ function RolesDashboard() {
     getdata();
   }, []);
 
-  const handleDelete = async (roleid) => {
+ 
+
+  const handleCreate = async (values) => {
     try {
-      const confirmDelete = window.confirm(
-        "Are you sure you want to delete this record?"
-      );
+      const rolename = values.rolename?.trim();
 
-      if (!confirmDelete) return;
+      if (!rolename) {
+        alert("Role name is required");
+        return false;
+      }
 
-      await axios.delete(
-        `http://localhost:5000/role/delete/${roleid}`
-      );
+      await axios.post("http://localhost:5000/role/addrole", {
+        rolename,
+        pages: values.pages?.trim() || "",
+      });
 
-      alert("Deleted successfully");
-      getdata();
+      alert("Role added successfully");
+      await getdata();
+      return true;
     } catch (error) {
-      console.log("Delete Error:", error);
+      console.log("Add Error:", error.response?.data || error.message);
+      alert("Add failed");
+      return false;
     }
   };
+
+
 
   const columns = useMemo(
     () => [
@@ -50,7 +61,11 @@ function RolesDashboard() {
         Cell: ({ row }) => row.index + 1,
         enableEditing: false,
       },
-     
+
+        {
+        accessorKey: "roleid",
+        header: "Role id",
+      },
       {
         accessorKey: "rolename",
         header: "Role Name",
@@ -67,32 +82,54 @@ function RolesDashboard() {
     columns,
     data: userData,
 
-    enableEditing: true,
-    editDisplayMode: "row",
+  
 
-    positionActionsColumn: "last",
+    createDisplayMode: "modal",
 
-    renderRowActions: ({ row }) => (
-      <div className="flex gap-2">
-        <button
-          onClick={() => table.setEditingRow(row)}
-          className="rounded bg-blue-500 px-3 py-1 text-white hover:bg-blue-600"
-        >
-          Edit
-        </button>
+    onCreatingRowSave: async ({ values, table }) => {
+      const saved = await handleCreate(values);
+      if (saved) {
+        table.setCreatingRow(null);
+      }
+    },
 
-        <button
-          onClick={() => handleDelete(row.original.roleid)}
-          className="rounded bg-red-500 px-3 py-1 text-white hover:bg-red-600"
-        >
-          Delete
-        </button>
-      </div>
+    onCreatingRowCancel: ({ table }) => {
+      table.setCreatingRow(null);
+    },
+
+    renderTopToolbarCustomActions: ({ table }) => (
+      <button
+        onClick={() => table.setCreatingRow(true)}
+        className="rounded bg-green-600 px-4 py-2 text-white hover:bg-green-700"
+      >
+        + Add Role
+      </button>
     ),
+
+    onEditingRowSave: async ({ row, values, table }) => {
+      const saved = await handleUpdate(row, values);
+      if (saved) {
+        table.setEditingRow(null);
+      }
+    },
+
+    onEditingRowCancel: ({ table }) => {
+      table.setEditingRow(null);
+    },
+
+  
+    
   });
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
+      <button
+        onClick={() => navigate("/")}
+        className="mb-4 rounded bg-gray-700 px-4 py-2 text-white hover:bg-gray-800"
+      >
+        ← Back to Dashboard
+      </button>
+
       <h2 className="mb-5 text-2xl font-bold">
         Roles Dashboard
       </h2>

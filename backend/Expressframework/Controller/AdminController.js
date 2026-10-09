@@ -29,11 +29,10 @@ const getdata = async (req, res) => {
         if (err) {
             console.log(err);
 
-            const res = await.res.status(500).json({
+            return res.status(500).json({
                 message: "Not data",
                 data: err,
             })
-            console.log(res)
         }
         else {
             res.status(200).json({
@@ -52,41 +51,15 @@ const update = (req, res) => {
 
     const { roleid } = req.params;
 
-    const {
-        rolename,
-        email,
-        phonenumber,
-        gender,
-        pages,
-        createdby,
-        updatedby
-    } = req.body;
+    const {  rolename,  email,  phonenumber,  gender,  pages,  createdby,  updatedby } = req.body;
 
     console.log("Role ID:", roleid);
     console.log("Request body:", req.body);
 
     const sql = `
-        UPDATE admin 
-        SET 
-            rolename = ?,
-            createdby = ?,
-            updatedby = ?,
-            email = ?,
-            Phonenumber = ?,
-            gender = ?,
-            page = ?
-        WHERE roleid = ?
-    `;
+        UPDATE admin SET  rolename = ?, createdby = ?, updatedby = ?, email = ?, phonenumber = ?, gender = ?, pages = ? WHERE roleid = ?`;
 
-    const values = [
-        rolename,
-        createdby,
-        updatedby,
-        email,
-        phonenumber,
-        gender,
-        pages,
-        roleid
+    const values = [rolename,createdby,updatedby,email,phonenumber,gender,pages, roleid
     ];
 
     console.log("SQL values:", values);
