@@ -26,8 +26,11 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
 
+console.log("server is running....");
 
-
+app.get('/',(req,res)=>{
+  res.send("server is runningh...")  
+})
 app.use('/api',userRoutes)
 
 // catch 404 and forward to error handler
