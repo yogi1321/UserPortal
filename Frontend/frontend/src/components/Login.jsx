@@ -5,6 +5,9 @@ import { useNavigate } from 'react-router-dom';
 
 function Login() {
   const navigate = useNavigate();
+    useEffect(() => {
+    localStorage.removeItem("token");
+  }, []);
  
  const [form , setForm] = useState({
     email:"",
