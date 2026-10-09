@@ -22,10 +22,10 @@ function App() {
 
             <Routes>
 
-                {/* Login page */}
+               
                 <Route path="/" element={<Login />} />
 
-                {/* Registration page */}
+               
                 <Route
                     path="/register"
                     element={<RegisterForm />}
@@ -39,6 +39,7 @@ function App() {
                         </ProtectedRoute>
                     }
                 /> 
+               
 
             </Routes>
 

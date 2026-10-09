@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate ,Link} from "react-router-dom";
 
 function RegisterForm() {
 
@@ -234,11 +234,11 @@ const navigate=useNavigate();
 
                                     <button
                                         type="submit" 
-                                        className="btn btn-primary"
-                                      
-                                    >
+                                        className="btn btn-primary "
+                                      >
                                         Register
                                     </button>
+                       <center>       <Link to="/"  >    <p>Log in</p></Link></center>
 
                                 </div>
 

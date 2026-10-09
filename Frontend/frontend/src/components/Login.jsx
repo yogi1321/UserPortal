@@ -1,7 +1,7 @@
 import react from 'react';
 import {useState,useEffect}from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,Link } from 'react-router-dom';
 
 function Login() {
   const navigate = useNavigate();
@@ -78,10 +78,7 @@ function Login() {
                     <button type="submit" className="btn btn-primary w-100 login-button">
                         Login
                     </button>
-                    <center>
-                    <h4 onClick={()=>navigate("/register")}>
-                        Register</h4>
-                    </center>
+                    <center> <Link to="register"  ><p>Register</p></Link></center>
                 </form>
 
             </div>
